@@ -8,7 +8,7 @@ import { FilmsService } from './films/films.service';
 import { OrderController } from './order/order.controller';
 import { OrderService } from './order/order.service';
 import { FilmsRepositoryMock } from './repository/films-mock.repository';
-import { FilmsMongoRepository,} from './repository/films-mongo.repository';
+import { FilmsMongoRepository, } from './repository/films-mongo.repository';
 import { AppConfigModule } from './app.config.module';
 import mongoose, { Mongoose } from 'mongoose';
 
