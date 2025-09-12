@@ -10,12 +10,7 @@ import { OrderService } from './order/order.service';
 import { AppConfigModule } from './app.config.module';
 import mongoose, { Mongoose } from 'mongoose';
 import { TypeORMConfigModule } from './typeorm.config.module'
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Film } from './films/entities/film.entity';
-import { Schedule } from './films/entities/schedule.entity';
-import { FilmsRepositoryMock } from './repository/films-mock.repository';
-import { FilmsMongoRepository, } from './repository/films-mongo.repository';
-import { FilmsPostgresRepository, } from './repository/films-postgres.repository';
+import { FilmsRepositoryModule } from './repository/films.repository.module';
 
 @Module({
   imports: [
@@ -33,33 +28,9 @@ import { FilmsPostgresRepository, } from './repository/films-postgres.repository
     }),
     AppConfigModule,
     TypeORMConfigModule,
+    FilmsRepositoryModule,
   ],
   controllers: [FilmsController, OrderController],
-  providers: [
-    configProvider,
-    OrderService,
-    FilmsService,
-
-    //{ provide: 'FilmsRepository', useClass: FilmsRepositoryMock },
-
-    { provide: 'FilmsRepository', useClass: FilmsPostgresRepository },
-
-    /*Для Mongo     
-    { provide: 'FilmsRepository', useClass: FilmsMongoRepository },
-    {
-      provide: 'MONGO_CONNECTION',
-      useFactory: async (config: AppConfig): Promise<Mongoose> => {
-        if (config.database.driver !== 'mongodb') {
-          throw new Error(`Unsupported DB driver: ${config.database.driver}`);
-        }
-        const connection = await mongoose.connect(config.database.url);
-        return connection;
-      },
-      inject: ['CONFIG'],
-    },
-    */
-  ],
-
-  exports: ['FilmsRepository'],
+  providers: [configProvider, OrderService, FilmsService,],
 })
 export class AppModule { }

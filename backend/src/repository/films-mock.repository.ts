@@ -5,7 +5,7 @@ import { faker } from "@faker-js/faker";
 import { FilmsRepository } from './films.repository';
 
 @Injectable()
-export class FilmsRepositoryMock implements FilmsRepository {
+export class FilmsMockRepository implements FilmsRepository {
     private readonly films: FilmDto[] = [
         {
             id: '0e33c7f6-27a7-4aa0-8e61-65d7e5effecf',
