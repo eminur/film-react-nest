@@ -11,6 +11,11 @@ import { FilmsRepositoryMock } from './repository/films-mock.repository';
 import { FilmsMongoRepository, } from './repository/films-mongo.repository';
 import { AppConfigModule } from './app.config.module';
 import mongoose, { Mongoose } from 'mongoose';
+import { TypeORMConfigModule } from './typeorm.config.module'
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Film } from './films/entities/film.entity';
+import { Schedule } from './films/entities/schedule.entity';
+import { FilmsPostgresRepository, } from './repository/films-postgres.repository';
 
 @Module({
   imports: [
@@ -27,14 +32,26 @@ import mongoose, { Mongoose } from 'mongoose';
       },
     }),
     AppConfigModule,
+    TypeORMConfigModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'admin',
+      password: 'root',
+      database: 'films',
+      entities: [Film, Schedule],
+      synchronize: false,
+    })
   ],
   controllers: [FilmsController, OrderController],
   providers: [
     configProvider,
     OrderService,
     FilmsService,
-    { provide: 'FilmsRepository', useClass: FilmsMongoRepository },
+    //{ provide: 'FilmsRepository', useClass: FilmsMongoRepository },
     //{ provide: 'FilmsRepository', useClass: FilmsRepositoryMock },
+    { provide: 'FilmsRepository', useClass: FilmsPostgresRepository },
     {
       provide: 'MONGO_CONNECTION',
       useFactory: async (config: AppConfig): Promise<Mongoose> => {
