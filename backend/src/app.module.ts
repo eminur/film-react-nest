@@ -7,14 +7,14 @@ import { FilmsController } from './films/films.controller';
 import { FilmsService } from './films/films.service';
 import { OrderController } from './order/order.controller';
 import { OrderService } from './order/order.service';
-import { FilmsRepositoryMock } from './repository/films-mock.repository';
-import { FilmsMongoRepository, } from './repository/films-mongo.repository';
 import { AppConfigModule } from './app.config.module';
 import mongoose, { Mongoose } from 'mongoose';
 import { TypeORMConfigModule } from './typeorm.config.module'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Film } from './films/entities/film.entity';
 import { Schedule } from './films/entities/schedule.entity';
+import { FilmsRepositoryMock } from './repository/films-mock.repository';
+import { FilmsMongoRepository, } from './repository/films-mongo.repository';
 import { FilmsPostgresRepository, } from './repository/films-postgres.repository';
 
 @Module({
@@ -33,25 +33,19 @@ import { FilmsPostgresRepository, } from './repository/films-postgres.repository
     }),
     AppConfigModule,
     TypeORMConfigModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'admin',
-      password: 'root',
-      database: 'films',
-      entities: [Film, Schedule],
-      synchronize: false,
-    })
   ],
   controllers: [FilmsController, OrderController],
   providers: [
     configProvider,
     OrderService,
     FilmsService,
-    //{ provide: 'FilmsRepository', useClass: FilmsMongoRepository },
+
     //{ provide: 'FilmsRepository', useClass: FilmsRepositoryMock },
+
     { provide: 'FilmsRepository', useClass: FilmsPostgresRepository },
+
+    /*Для Mongo     
+    { provide: 'FilmsRepository', useClass: FilmsMongoRepository },
     {
       provide: 'MONGO_CONNECTION',
       useFactory: async (config: AppConfig): Promise<Mongoose> => {
@@ -63,6 +57,7 @@ import { FilmsPostgresRepository, } from './repository/films-postgres.repository
       },
       inject: ['CONFIG'],
     },
+    */
   ],
 
   exports: ['FilmsRepository'],
