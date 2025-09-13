@@ -7,7 +7,7 @@ export const configProvider = {
     //TODO прочесть переменнные среды
     database: {
       driver: process.env.DATABASE_DRIVER || 'postgres',
-      url: process.env.DATABASE_URL,
+      url: process.env.DATABASE_URL || 'mongodb://localhost:27017/afisha',
       host: process.env.DATABASE_HOST,
       port: Number(process.env.DATABASE_PORT),
       username: process.env.DATABASE_USERNAME,
