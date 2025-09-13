@@ -4,18 +4,18 @@ import { FilmsRepository } from '../repository/films.repository';
 
 @Injectable()
 export class FilmsService {
-    constructor(
-        @Inject('FilmsRepository')
-        private readonly filmsRepository: FilmsRepository,
-    ) { }
+  constructor(
+    @Inject('FilmsRepository')
+    private readonly filmsRepository: FilmsRepository,
+  ) {}
 
-    async findAll(): Promise<FilmsDto> {
-        const items = await this.filmsRepository.findAll();
-        return { total: items.length, items };
-    }
+  async findAll(): Promise<FilmsDto> {
+    const items = await this.filmsRepository.findAll();
+    return { total: items.length, items };
+  }
 
-    async getSchedule(id: string): Promise<FilmScheduleDto> {
-        const film: FilmDto = await this.filmsRepository.findById(id);
-        return { total: film.schedule.length, items: film.schedule };
-    }
+  async getSchedule(id: string): Promise<FilmScheduleDto> {
+    const film: FilmDto = await this.filmsRepository.findById(id);
+    return { total: film.schedule.length, items: film.schedule };
+  }
 }
