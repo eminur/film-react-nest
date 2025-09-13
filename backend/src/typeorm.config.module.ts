@@ -9,7 +9,7 @@ import { AppConfigModule } from './app.config.module';
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [AppConfigModule],
-      inject: ['CONFIG'], 
+      inject: ['CONFIG'],
       useFactory: (config: AppConfig) => ({
         type: 'postgres',
         host: config.database.host,
@@ -18,7 +18,7 @@ import { AppConfigModule } from './app.config.module';
         password: config.database.password,
         database: config.database.database,
         entities: [Film, Schedule],
-        synchronize: false, 
+        synchronize: false,
       }),
     }),
     TypeOrmModule.forFeature([Film, Schedule]),

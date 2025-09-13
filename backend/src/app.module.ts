@@ -8,7 +8,7 @@ import { FilmsService } from './films/films.service';
 import { OrderController } from './order/order.controller';
 import { OrderService } from './order/order.service';
 import { AppConfigModule } from './app.config.module';
-import { TypeORMConfigModule } from './typeorm.config.module'
+import { TypeORMConfigModule } from './typeorm.config.module';
 import { FilmsRepositoryModule } from './repository/films.repository.module';
 
 @Module({
@@ -30,6 +30,6 @@ import { FilmsRepositoryModule } from './repository/films.repository.module';
     FilmsRepositoryModule,
   ],
   controllers: [FilmsController, OrderController],
-  providers: [configProvider, OrderService, FilmsService,],
+  providers: [configProvider, OrderService, FilmsService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -3,28 +3,28 @@ import { Film } from './film.entity';
 
 @Entity('schedules')
 export class Schedule {
-    @PrimaryColumn()
-    @Generated("uuid")
-    id: string;
+  @PrimaryColumn()
+  @Generated('uuid')
+  id: string;
 
-    @Column()
-    daytime: string;
+  @Column()
+  daytime: string;
 
-    @Column()
-    hall: number;
+  @Column()
+  hall: number;
 
-    @Column()
-    rows: number;
+  @Column()
+  rows: number;
 
-    @Column()
-    seats: number;
+  @Column()
+  seats: number;
 
-    @Column()
-    price: number;
+  @Column()
+  price: number;
 
-    @Column()
-    taken: string;
+  @Column()
+  taken: string;
 
-    @ManyToOne(() => Film, (film) => film.schedules, { onDelete: 'CASCADE' })
-    film: Film;
+  @ManyToOne(() => Film, (film) => film.schedules, { onDelete: 'CASCADE' })
+  film: Film;
 }
