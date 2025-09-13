@@ -6,7 +6,7 @@ export const configProvider = {
   useValue: <AppConfig>{
     //TODO прочесть переменнные среды
     database: {
-      driver: process.env.DATABASE_DRIVER,
+      driver: process.env.DATABASE_DRIVER || 'postgres',
       url: process.env.DATABASE_URL,
       host: process.env.DATABASE_HOST,
       port: Number(process.env.DATABASE_PORT),

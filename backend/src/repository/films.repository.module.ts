@@ -24,6 +24,7 @@ import { Schedule } from '../films/entities/schedule.entity';
         mongoRepo: FilmsMongoRepository,
         mockRepo: FilmsMockRepository,
       ) => {
+        console.log(`Current DB driver: ${config.database.driver}`);
         switch (config.database.driver) {
           case 'postgres':
             return postgresRepo;
@@ -32,7 +33,9 @@ import { Schedule } from '../films/entities/schedule.entity';
           case 'mock':
             return mockRepo;
           default:
-            throw new Error(`Unsupported DB driver: ${config.database.driver}`);
+            throw new Error(
+              `Unsupported DB driver: ${config.database.driver} . Allowed values "postgres","mongodb", "mock"`,
+            );
         }
       },
       inject: [

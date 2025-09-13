@@ -7,7 +7,7 @@ import {
 import { TicketDto } from '../order/dto/order.dto';
 import { Model, Mongoose } from 'mongoose';
 import { FilmDocument, FilmSchema } from './schema/film.schema';
-import { faker } from '@faker-js/faker';
+import { randomUUID } from 'crypto';
 import { FilmsRepository } from './films.repository';
 
 @Injectable()
@@ -52,6 +52,6 @@ export class FilmsMongoRepository implements FilmsRepository {
       { $addToSet: { 'schedule.$.taken': `${ticket.row}:${ticket.seat}` } },
     );
 
-    return { success: true, ticketId: faker.string.uuid() };
+    return { success: true, ticketId: randomUUID() };
   }
 }

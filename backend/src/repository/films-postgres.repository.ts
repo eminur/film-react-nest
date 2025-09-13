@@ -10,7 +10,7 @@ import { Schedule } from '../films/entities/schedule.entity';
 import { FilmsRepository } from './films.repository';
 import { TicketDto } from '../order/dto/order.dto';
 import { FilmDto, ScheduleDto } from '../films/dto/films.dto';
-import { faker } from '@faker-js/faker';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class FilmsPostgresRepository implements FilmsRepository {
@@ -91,6 +91,6 @@ export class FilmsPostgresRepository implements FilmsRepository {
 
     await this.scheduleRepo.save(schedule);
 
-    return { success: true, ticketId: faker.string.uuid() };
+    return { success: true, ticketId: randomUUID() };
   }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { FilmDto } from '../films/dto/films.dto';
 import { TicketDto } from '../order/dto/order.dto';
-import { faker } from '@faker-js/faker';
 import { FilmsRepository } from './films.repository';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class FilmsMockRepository implements FilmsRepository {
@@ -307,6 +307,6 @@ export class FilmsMockRepository implements FilmsRepository {
 
   async takeSeat(ticket: TicketDto) {
     console.log(`Выбрано место: ${ticket.row}:${ticket.seat}`);
-    return { success: true, ticketId: faker.string.uuid() };
+    return { success: true, ticketId: randomUUID() };
   }
 }
