@@ -49,6 +49,9 @@ import { Schedule } from '../films/entities/schedule.entity';
     {
       provide: 'MONGO_CONNECTION',
       useFactory: async (config: AppConfig): Promise<Mongoose | null> => {
+        if (config.database.driver !== 'mongodb') {
+          return null;
+        }
         return mongoose.connect(config.database.url);
       },
       inject: ['CONFIG'],

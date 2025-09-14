@@ -12,21 +12,37 @@ import { FilmsRepository } from './films.repository';
 
 @Injectable()
 export class FilmsMongoRepository implements FilmsRepository {
-  private filmModel: Model<FilmDocument>;
+  private filmModel: Model<FilmDocument> | null = null;
+  private connectionError: string =
+    'Mongo connection is not initialized. Make sure driver= "mongodb" is set in config.';
 
-  constructor(@Inject('MONGO_CONNECTION') private connection: Mongoose) {
-    this.filmModel = this.connection.model<FilmDocument>('Film', FilmSchema);
+  constructor(@Inject('MONGO_CONNECTION') private connection: Mongoose | null) {
+    if (this.connection) {
+      this.filmModel = this.connection.model<FilmDocument>('Film', FilmSchema);
+    }
   }
 
   async findAll() {
+    if (!this.filmModel) {
+      throw new Error(this.connectionError);
+    }
+
     return this.filmModel.find().exec();
   }
 
   async findById(id: string) {
+    if (!this.filmModel) {
+      throw new Error(this.connectionError);
+    }
+
     return this.filmModel.findOne({ id }).exec();
   }
 
   async takeSeat(ticket: TicketDto) {
+    if (!this.filmModel) {
+      throw new Error(this.connectionError);
+    }
+
     // 1. Найдём фильм и расписание
     const film = await this.filmModel.findOne(
       { id: ticket.film, 'schedule.id': ticket.session },
