@@ -22,10 +22,13 @@ export class FilmsMongoRepository implements FilmsRepository {
 
   private get model(): Model<FilmDocument> {
     if (!this.filmModel) {
-      throw new Error('Mongo connection is not initialized. Make sure driver="mongodb" is set in config.',);
+      throw new Error(
+        'Mongo connection is not initialized. Make sure driver="mongodb" is set in config.',
+      );
     }
     return this.filmModel;
   }
+
   async findAll() {
     return this.model.find().exec();
   }
