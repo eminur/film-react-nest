@@ -13,8 +13,6 @@ import { FilmsRepository } from './films.repository';
 @Injectable()
 export class FilmsMongoRepository implements FilmsRepository {
   private filmModel: Model<FilmDocument> | null = null;
-  private connectionError: string =
-    'Mongo connection is not initialized. Make sure driver= "mongodb" is set in config.';
 
   constructor(@Inject('MONGO_CONNECTION') private connection: Mongoose | null) {
     if (this.connection) {
@@ -22,29 +20,23 @@ export class FilmsMongoRepository implements FilmsRepository {
     }
   }
 
-  async findAll() {
+  private get model(): Model<FilmDocument> {
     if (!this.filmModel) {
-      throw new Error(this.connectionError);
+      throw new Error('Mongo connection is not initialized. Make sure driver="mongodb" is set in config.',);
     }
-
-    return this.filmModel.find().exec();
+    return this.filmModel;
+  }
+  async findAll() {
+    return this.model.find().exec();
   }
 
   async findById(id: string) {
-    if (!this.filmModel) {
-      throw new Error(this.connectionError);
-    }
-
-    return this.filmModel.findOne({ id }).exec();
+    return this.model.findOne({ id }).exec();
   }
 
   async takeSeat(ticket: TicketDto) {
-    if (!this.filmModel) {
-      throw new Error(this.connectionError);
-    }
-
     // 1. Найдём фильм и расписание
-    const film = await this.filmModel.findOne(
+    const film = await this.model.findOne(
       { id: ticket.film, 'schedule.id': ticket.session },
       { 'schedule.$': 1 }, // берём только нужное расписание
     );
@@ -63,7 +55,7 @@ export class FilmsMongoRepository implements FilmsRepository {
     }
 
     // 3. Добавим место (гарантия уникальности через $addToSet)
-    await this.filmModel.updateOne(
+    await this.model.updateOne(
       { id: ticket.film, 'schedule.id': ticket.session },
       { $addToSet: { 'schedule.$.taken': `${ticket.row}:${ticket.seat}` } },
     );
