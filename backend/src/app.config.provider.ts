@@ -14,11 +14,15 @@ export const configProvider = {
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
     },
+    logger: {
+      type: process.env.LOGGER_TYPE,
+    },
   },
 };
 
 export interface AppConfig {
   database: AppConfigDatabase;
+  logger: AppConfigLogger;
 }
 
 export interface AppConfigDatabase {
@@ -29,4 +33,8 @@ export interface AppConfigDatabase {
   username: string;
   password: string;
   database: string;
+}
+
+export interface AppConfigLogger {
+  type: string;
 }

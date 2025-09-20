@@ -3,10 +3,20 @@ import { FilmsService } from './films.service';
 
 describe('FilmsService', () => {
   let service: FilmsService;
+  const mockFilmsRepository = {
+    findAll: jest.fn(),
+    findById: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FilmsService],
+      providers: [
+        FilmsService,
+        {
+          provide: 'FilmsRepository',
+          useValue: mockFilmsRepository,
+        },
+      ],
     }).compile();
 
     service = module.get<FilmsService>(FilmsService);
