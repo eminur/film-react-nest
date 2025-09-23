@@ -1,0 +1,69 @@
+# version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      VITE_API_URL: http://backend:3000/api/afisha
+      VITE_CDN_URL: http://backend:3000/content/afisha
+    volumes:
+      - frontend-build:/var/www/app/dist
+    image: ghcr.io/eminur/frontend:latest
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" 
+    environment:
+      DATABASE_DRIVER: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: admin
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: films
+      LOGGER_TYPE: tskv
+      DEBUG: "*"
+    depends_on:
+      - db  
+    image: ghcr.io/eminur/backend:latest
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - frontend-build:/usr/share/nginx/html
+    depends_on:
+      - frontend
+      - backend
+    image: ghcr.io/eminur/nginx:latest
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: films
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'  
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  frontend-build:
+  pgdata:
+  pgadmin-data:
