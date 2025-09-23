@@ -3,7 +3,7 @@ name: Build and Push Docker Images
 on:
   push:
     branches:
-      - review-3  # или ваша основная ветка
+      - main  # или ваша основная ветка
 
 permissions:
   contents: read
