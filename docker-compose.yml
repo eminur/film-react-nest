@@ -10,7 +10,7 @@ services:
       VITE_CDN_URL: http://backend:3000/content/afisha
     volumes:
       - frontend-build:/var/www/app/dist
-    #image: ghcr.io/your-org/frontend:latest
+    image: ghcr.io/eminur/frontend:latest
 
   backend:
     build:
@@ -29,7 +29,7 @@ services:
       DEBUG: "*"
     depends_on:
       - db  
-    #image: ghcr.io/your-org/backend:latest
+    image: ghcr.io/eminur/backend:latest
 
   nginx:
     build: ./nginx
@@ -40,7 +40,7 @@ services:
     depends_on:
       - frontend
       - backend
-    #image: ghcr.io/your-org/nginx:latest
+    image: ghcr.io/eminur/nginx:latest
 
   db:
     image: postgres:16
